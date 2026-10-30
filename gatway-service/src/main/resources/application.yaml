@@ -12,27 +12,27 @@ spring:
         webmvc:
           routes:
             - id: account-api
-              uri: http://localhost:8081
+              uri: lb://account-service
               predicates:
                 - Path=/api/accounts/**
             - id: transaction-api
-              uri: http://localhost:8082
+              uri: lb://transaction-service
               predicates:
                 - Path=/api/transactions/**
             # /account-service/graphql, /account-service/sse ... -> account-service
             - id: account-service
-              uri: http://localhost:8081
+              uri: lb://account-service
               predicates:
                 - Path=/account-service/**
               filters:
                 - StripPrefix=1
             - id: transaction-service
-              uri: http://localhost:8082
+              uri: lb://transaction-service
               predicates:
                 - Path=/transaction-service/**
               filters:
                 - StripPrefix=1
 
 eureka:
-  client:
-    enabled: false
+  instance:
+    prefer-ip-address: true

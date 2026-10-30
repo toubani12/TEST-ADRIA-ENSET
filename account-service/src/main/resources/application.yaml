@@ -24,9 +24,6 @@ spring:
   
 
 eureka:
-  client:
-    enabled: false
-
   instance:
     prefer-ip-address: true
 
