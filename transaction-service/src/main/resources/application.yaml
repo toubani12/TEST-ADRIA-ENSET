@@ -30,3 +30,26 @@ spring.kafka:
     value-serializer: org.apache.kafka.common.serialization.StringSerializer
     properties:
       max.block.ms: 3000
+
+# --- Resilience4J (partie C3) ---
+spring.cloud.openfeign:
+  circuitbreaker:
+    enabled: true
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 2
+        ignore-exceptions:
+          - feign.FeignException$NotFound
+          - feign.FeignException$BadRequest
+          - feign.FeignException$Conflict
+          - feign.FeignException$UnprocessableEntity
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 3s

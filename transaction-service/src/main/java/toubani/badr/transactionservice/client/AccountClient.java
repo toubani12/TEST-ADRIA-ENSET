@@ -11,7 +11,7 @@ import toubani.badr.transactionservice.dto.BalanceDto;
 
 import java.util.UUID;
 
-@FeignClient(name = "account-service")
+@FeignClient(name = "account-service", fallbackFactory = AccountClientFallbackFactory.class)
 public interface AccountClient {
 
     @GetMapping("/api/accounts/{id}")
