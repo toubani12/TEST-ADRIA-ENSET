@@ -4,9 +4,8 @@ server:
 spring:
   application:
     name: account-service
-  cloud:
-    config:
-      enabled: false
+  config:
+    import: optional:configserver:http://localhost:8888
   datasource:
     url: jdbc:h2:mem:account-db
     username: sa

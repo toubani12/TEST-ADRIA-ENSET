@@ -4,9 +4,9 @@ server:
 spring:
   application:
     name: gatway-service
+  config:
+    import: optional:configserver:http://localhost:8888
   cloud:
-    config:
-      enabled: false
     gateway:
       server:
         webmvc:

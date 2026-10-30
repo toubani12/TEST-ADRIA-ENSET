@@ -4,9 +4,8 @@ server:
 spring:
   application:
     name: transaction-service
-  cloud:
-    config:
-      enabled: false
+  config:
+    import: optional:configserver:http://localhost:8888
   datasource:
     url: jdbc:h2:mem:transaction-db
   jpa:
@@ -22,7 +21,3 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
-
-bank:
-  transaction:
-    max-amount: 1000
