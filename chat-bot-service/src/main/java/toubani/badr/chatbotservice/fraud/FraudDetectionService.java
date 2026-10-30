@@ -103,12 +103,16 @@ public class FraudDetectionService {
         for (int i = 0; i < header.size(); i++) idx.put(header.get(i).trim(), i);
         List<Tx> out = new ArrayList<>();
         for (String line : lines.subList(1, lines.size())) {
-            String[] c = line.trim().split(",");
+            String[] c = line.trim().split(",", -1);
             if (c.length < header.size()) continue;
-            out.add(new Tx(c[idx.get("transaction_id")], Double.parseDouble(c[idx.get("amount")]),
+            try {
+                out.add(new Tx(c[idx.get("transaction_id")], Double.parseDouble(c[idx.get("amount")]),
                     (int) Double.parseDouble(c[idx.get("hour")]), c[idx.get("country")], c[idx.get("merchant_category")],
                     (int) Double.parseDouble(c[idx.get("transactions_last_24h")]),
                     Double.parseDouble(c[idx.get("average_amount_last_7d")]), (int) Double.parseDouble(c[idx.get("is_fraud")])));
+            } catch (NumberFormatException incomplete) {
+                // ligne incomplète (valeur manquante) : ignorée
+            }
         }
         return out;
     }
