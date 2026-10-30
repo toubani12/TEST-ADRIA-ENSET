@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:account-test-db;DB_CLOSE_DELAY=-1
+  cloud:
+    config:
+      enabled: false
+eureka:
+  client:
+    enabled: false
+app:
+  security:
+    enabled: false
+  seed:
+    enabled: false

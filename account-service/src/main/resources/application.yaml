@@ -1,0 +1,39 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: account-service
+  cloud:
+    config:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:account-db
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  h2:
+    console:
+      enabled: true
+  graphql:
+    graphiql:
+      enabled: true
+  
+
+eureka:
+  client:
+    enabled: false
+
+  instance:
+    prefer-ip-address: true
+
+
+
+app:
+  security:
+    enabled: false
+  seed:
+    enabled: true
