@@ -56,7 +56,7 @@ resilience4j:
 
 app:
   security:
-    enabled: ${SECURITY_ENABLED:false}
+    enabled: ${SECURITY_ENABLED:true}
 
 # --- Keycloak (resource server JWT, actif si SECURITY_ENABLED=true) ---
 spring.security.oauth2.resourceserver.jwt:
