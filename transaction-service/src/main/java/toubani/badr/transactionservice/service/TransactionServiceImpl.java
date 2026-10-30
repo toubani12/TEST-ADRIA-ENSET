@@ -2,7 +2,10 @@ package toubani.badr.transactionservice.service;
 
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import toubani.badr.transactionservice.event.TransactionCreatedEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toubani.badr.transactionservice.client.AccountClient;
@@ -25,6 +28,18 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountClient accountClient;
     private final BigDecimal maxAmount;
+    private ApplicationEventPublisher events;
+
+    @Autowired(required = false)
+    void setEvents(ApplicationEventPublisher events) {
+        this.events = events;
+    }
+
+    private void publish(Transaction t) {
+        if (events != null) {
+            events.publishEvent(TransactionCreatedEvent.of(t.getId(), t.getAccountId(), t.getAmount(), t.getCurrency(), t.getCreatedAt()));
+        }
+    }
 
     public TransactionServiceImpl(TransactionRepository transactionRepository, AccountClient accountClient,
                                   @Value("${bank.transaction.max-amount}") BigDecimal maxAmount) {
@@ -41,6 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction saved = transactionRepository.save(newTransaction(request, TransactionType.PAYMENT));
         callAccount(() -> accountClient.debit(request.accountId(), new AmountRequest(request.amount().doubleValue())));
+        publish(saved);
         log.info("Paiement {} de {} {} sur le compte {}", saved.getId(), saved.getAmount(), saved.getCurrency(),
                 saved.getAccountId());
         return TransactionResponse.from(saved);
@@ -53,6 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction saved = transactionRepository.save(newTransaction(request, TransactionType.DEPOSIT));
         callAccount(() -> accountClient.credit(request.accountId(), new AmountRequest(request.amount().doubleValue())));
+        publish(saved);
         log.info("Dépôt {} de {} {} sur le compte {}", saved.getId(), saved.getAmount(), saved.getCurrency(),
                 saved.getAccountId());
         return TransactionResponse.from(saved);
@@ -88,6 +105,8 @@ public class TransactionServiceImpl implements TransactionService {
             callAccount(() -> accountClient.credit(request.fromAccountId(), amount));
             throw creditFailure;
         }
+        publish(debit);
+        publish(credit);
         log.info("Virement {} de {} {} : {} -> {}", transferId, request.amount(), request.currency(),
                 request.fromAccountId(), request.toAccountId());
         return new TransferResponse(transferId, TransactionResponse.from(debit), TransactionResponse.from(credit));

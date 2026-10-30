@@ -21,3 +21,12 @@ spring:
 eureka:
   instance:
     prefer-ip-address: true
+
+  # --- Kafka (partie F) ---
+spring.kafka:
+  bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    properties:
+      max.block.ms: 3000
