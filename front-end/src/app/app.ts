@@ -3,6 +3,7 @@ import { DecimalPipe, DatePipe, SlicePipe, UpperCasePipe } from '@angular/common
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BankApi } from './core/bank-api';
+import { auth } from './core/auth';
 import { Account, AuditEntry, ChatMessage, Transaction } from './core/models';
 
 type Tab = 'comptes' | 'operations' | 'historique' | 'audit' | 'assistant';
@@ -15,6 +16,7 @@ type Tab = 'comptes' | 'operations' | 'historique' | 'audit' | 'assistant';
 })
 export class App {
   private api = inject(BankApi);
+  auth = auth;
 
   tab = signal<Tab>('comptes');
   accounts = signal<Account[]>([]);

@@ -1,0 +1,6 @@
+{
+  "securityEnabled": false,
+  "keycloakUrl": "http://localhost:8080",
+  "realm": "bank-realm",
+  "clientId": "bank-front"
+}

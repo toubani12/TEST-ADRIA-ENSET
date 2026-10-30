@@ -5,6 +5,10 @@
       <button [class.active]="tab() === t" (click)="show($any(t))">{{ t | slice:0:1 | uppercase }}{{ t | slice:1 }}</button>
     }
   </nav>
+  @if (auth.enabled) {
+    <div class="user"><span>{{ auth.username }}</span><small>{{ auth.isAdmin ? 'ADMIN' : 'USER' }}</small>
+      <button class="ghost" (click)="auth.logout()">Déconnexion</button></div>
+  }
 </header>
 
 <main>
