@@ -10,10 +10,11 @@ spring:
     # LLM distant via une clé d'API (Groq, API compatible OpenAI) - aucun modèle entraîné localement
     openai:
       api-key: ${OPENAI_API_KEY:missing}
-      base-url: ${OPENAI_BASE_URL:https://api.groq.com/openai}
+      # Spring AI 2 utilise le SDK officiel OpenAI : l'URL inclut /v1
+      base-url: ${LLM_BASE_URL:https://api.groq.com/openai/v1}
       chat:
         options:
-          model: ${OPENAI_MODEL:openai/gpt-oss-120b}
+          model: ${LLM_MODEL:qwen/qwen3.8-27b}
           temperature: 0.2
     model:
       embedding: none
