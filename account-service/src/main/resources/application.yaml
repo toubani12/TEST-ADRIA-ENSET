@@ -30,6 +30,10 @@ eureka:
 
 app:
   security:
-    enabled: false
+    enabled: ${SECURITY_ENABLED:false}
   seed:
     enabled: true
+
+# --- Keycloak (resource server JWT, actif si SECURITY_ENABLED=true) ---
+spring.security.oauth2.resourceserver.jwt:
+  issuer-uri: ${KEYCLOAK_ISSUER:http://localhost:8080/realms/bank-realm}
