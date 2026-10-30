@@ -1,0 +1,6 @@
+{
+  "/api/accounts": { "target": "http://localhost:9090", "secure": false, "changeOrigin": true },
+  "/api/transactions": { "target": "http://localhost:9090", "secure": false, "changeOrigin": true },
+  "/api/audits": { "target": "http://localhost:8083", "secure": false, "changeOrigin": true },
+  "/api/chat": { "target": "http://localhost:8084", "secure": false, "changeOrigin": true }
+}
